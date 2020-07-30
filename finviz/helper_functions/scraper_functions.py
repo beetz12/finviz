@@ -31,6 +31,32 @@ def get_table(page_html, headers, rows=None, url=None):
 
     return data_sets
 
+def get_insider(page_parsed, headers, rows=None, url=None):
+    """ Private function used to return table data inside a list of dictonaries. """
+
+    # When we call this method from Portfolio we don't fill the rows argument.
+    # Conversly, we always fill the rows argument when we call this method from Screener.
+    # Also, in the portfolio page, we don't need the last row - it's redundant.
+    if rows is None:
+        rows = -2  # We'll increment it later (-1) and use it to cut the last row
+
+    data_sets = []
+    # Select the HTML of the rows and append each column text to a list
+    # Skip the first element ([1:]), since it's the headers (we already have it as a constant)
+    all_rows = [column.xpath('td//text()') for column in page_parsed.cssselect('tr[valign="top"]')[1:rows + 1]]
+
+    # If rows is different from -2, this function is called from Screener
+    if rows != -2:
+        for row_number, row_data in enumerate(all_rows, 1):
+            data_sets.append(dict(zip(headers, row_data)))
+            if row_number == rows:  # If we have reached the required end
+                break
+    else:
+        # Zip each row values to the headers and append them to data_sets
+        [data_sets.append(dict(zip(headers, row))) for row in all_rows]
+
+    return data_sets
+
 
 def get_total_rows(page_content):
     """ Returns the total number of rows(results). """
@@ -40,6 +66,14 @@ def get_total_rows(page_content):
 
     try:
         return int(total_number)
+    except ValueError:
+        return 0
+
+def get_total_insider_rows(page_content):
+    """ Returns the total number of rows(results). """
+    try:
+        total_elements = page_content.cssselect('.insider-sale-row-2, .insider-buy-row-2')
+        return len(total_elements)
     except ValueError:
         return 0
 
