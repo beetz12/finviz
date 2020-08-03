@@ -248,7 +248,7 @@ class Insider(object):
 
         result = data
         if(self._transaction_type is not None):
-            result = filter(lambda x: x['Transaction'] == self._transaction_type, data) 
+            result = list(filter(lambda x: x['Transaction'] == self._transaction_type, data))
 
         # print(foo)
 
