@@ -26,7 +26,7 @@ from finviz.main_func import *
 # #filters = ['geo_usa']
 filters = ['idx_sp500']  # Shows companies in the S&P500
 # print("Filtering stocks..")
-stock_list = Insider(transaction_type='buy')
+stock_list = Insider(transaction_type='Buy')
 # print("Parsing every stock..")
 # stock_list.get_ticker_details()
 

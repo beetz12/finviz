@@ -245,6 +245,11 @@ class Insider(object):
         # print(page_urls)
 
         data = scrape.get_insider(self._page_content, self.headers)
+
+        result = data
+        if(self._transaction_type is not None):
+            result = filter(lambda x: x['Transaction'] == self._transaction_type, data) 
+
         # print(foo)
 
         # async_connector = Connector(scrape.get_table,
@@ -257,5 +262,5 @@ class Insider(object):
         # for page in pages_data:
         #     for row in page:
         #         data.append(row)
-        print(data)
-        return data
+        print(result)
+        return result
