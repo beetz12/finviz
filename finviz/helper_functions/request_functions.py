@@ -24,10 +24,6 @@ def http_request_get(url, session=None, payload=None, parse=True):
 
         content.raise_for_status()  # Raise HTTPError for bad requests (4xx or 5xx)
 
-        f = open("source.html", "a")
-        f.write(content.text)
-        f.close()
-
         if parse:
             return html.fromstring(content.text), content.url
         else:
