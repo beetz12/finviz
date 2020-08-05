@@ -221,7 +221,6 @@ class Insider(object):
 
     def __get_table_headers(self):
         """ Private function used to return table headers. """
-        print(self._page_content.cssselect('.body-table tr')[0])
         return self._page_content.cssselect('.body-table tr')[0].xpath('td//text()')
 
     def __get_transaction_type(self):
@@ -250,17 +249,4 @@ class Insider(object):
         if(self._transaction_type is not None):
             result = list(filter(lambda x: x['Transaction'] == self._transaction_type, data))
 
-        # print(foo)
-
-        # async_connector = Connector(scrape.get_table,
-        #                             page_urls,
-        #                             self.headers,
-        #                             self._rows)
-        # pages_data = async_connector.run_connector()
-
-        # data = []
-        # for page in pages_data:
-        #     for row in page:
-        #         data.append(row)
-        print(result)
         return result
